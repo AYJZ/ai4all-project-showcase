@@ -1,6 +1,6 @@
 # Sounding Out Parkinson's Disease
 
-Built an end-to-end pipeline in AI4ALL Ignite accelerator that turns one sustained “ah” sound into a high-accuracy Parkinson’s disease screen, applying feature selection, class balancing, and machine learning modeling skills.
+Built an end-to-end pipeline in the AI4ALL Ignite accelerator program that turns one sustained “ah” sound into a high-accuracy Parkinson’s disease screen, applying feature selection, class balancing, and machine learning modeling skills.
 
 
 ## Problem Statement <!--- do not change this line -->
@@ -45,5 +45,5 @@ Because subtle voice changes emerge in ~90 % of patients years earlier, we asked
 ## Authors <!--- do not change this line -->
 
 *This project was completed in collaboration with:*
-- *Sophia Tang([sstang@bu.edu](mailto:sstang@bu.edu))*
+- *Sophia Tang ([sstang@bu.edu](mailto:sstang@bu.edu))*
 - *Fernando Peralta ([fperalta0248@gmail.com](mailto:fperalta0248@gmail.com))*
