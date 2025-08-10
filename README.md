@@ -47,3 +47,8 @@ Because subtle voice changes emerge in ~90 % of patients years earlier, we asked
 *This project was completed in collaboration with:*
 - *Sophia Tang ([sstang@bu.edu](mailto:sstang@bu.edu))*
 - *Fernando Peralta ([fperalta0248@gmail.com](mailto:fperalta0248@gmail.com))*
+
+*Special Thanks to:*
+- Eliza Salamon (eliza@ai-4-all[dot]org)
+- Orvil Escalante (sc_orvil_e@ai-4-all[dot]org)
+- Tatiane Wu Li (wu@uni[dot]minerva[dot]edu)
