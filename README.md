@@ -2,36 +2,72 @@
 
 Built an end-to-end pipeline in the AI4ALL Ignite accelerator program that turns one sustained “ah” sound into a high-accuracy Parkinson’s disease screen, applying feature selection, class balancing, and machine learning modeling skills.
 
+<br>
 
 ## Problem Statement <!--- do not change this line -->
 
-Parkinson’s disease is often diagnosed only after motor symptoms appear, missing a crucial early-treatment window.  
-Because subtle voice changes emerge in ~90 % of patients years earlier, we asked: **Can we detect PD from short voice recordings with transparent, low-cost machine learning?**
+Parkinson’s disease is often diagnosed **after motor symptoms appear**, losing valuable early-treatment opportunities.  
+However, subtle **voice changes occur in up to 90% of PD patients years earlier**.  
+We asked:  
 
+*Can short, low-cost voice recordings be used for accurate, transparent, and early Parkinson’s screening?*  
 
-## Key Results <!--- do not change this line -->
-
-1. Aggregated 756 vowel recordings into **252 unique speakers** (188 PD / 64 control) to avoid data leakage.  
-2. Reduced **755 acoustic features → top 20** via variance + correlation filters and Pearson ranking.  
-3. Balanced classes with **SMOTE-ENN**, selected ML model based on testing, and trained an XGBoost model achieving:  
-   - **Accuracy = 0.9664**  
-   - **ROC-AUC = 0.9853**  
-
-
-## Methodologies <!--- do not change this line -->
-
-* Speaker-aware aggregation (mean per ID) to eliminate cross-sample leakage.  
-* Two-step feature pruning: low-variance & high-correlation removal, then top-20 absolute Pearson r with class.  
-* Tested multiple machine learning models including Logistic Regression, KNN, MLP, Random Forest, and XGBoost.  
-* **SMOTE-ENN** applied **only on training folds** for balanced, clean samples.  
-* Hyper-parameter-tuned **XGBoost** model.  
-* Interpreted feature importance and generated SHAP explanations to keep the model clinician-friendly.
-
+<br>
 
 ## Data Sources <!--- do not change this line -->
 
 **UCI Parkinson’s Disease Classification Dataset** (Sakar et al., 2018)  
   <https://archive.ics.uci.edu/dataset/470/parkinson+s+disease+classification>
+
+<br>
+
+## Methodologies <!--- do not change this line -->
+
+### 1. **Speaker-Aware Aggregation**  
+- Combined multiple recordings per speaker into one row.  
+- Strategies: `mean`, `mean+std`, `median+IQR`.  
+- Prevents **speaker leakage** across train/test splits.  
+
+### 2. **Feature Engineering**  
+- Started with **~755 acoustic features**.  
+- Applied multiple selectors:  
+  - Variance + correlation pruning  
+  - Statistical ranking (Pearson, ANOVA F-score, Mutual Information)  
+  - Model-based (Logistic Regression L1/L2, Random Forest, XGBoost)  
+- Final feature set: **top 20 speaker-level predictors**.  
+
+### 3. **Group-Aware CV & Model Search**  
+- Train/test split and CV folds done **by speaker ID** (no leakage).  
+- Pipelines tested with:  
+  - **Models**: Logistic Regression, Random Forest, XGBoost  
+  - **Samplers**: None, SMOTE, SMOTE-ENN  
+  - **Selectors**: 6 feature-selection recipes  
+- **GridSearchCV with GroupKFold (5-fold)** tuned hyperparameters.  
+- Optimized primarily for **PD Recall (Sensitivity)** to minimize false negatives.  
+
+### 4. **Threshold Tuning**  
+- Instead of default 0.50, tuned decision thresholds.  
+- Used a **weighted utility function (α=0.7 Recall, β=0.3 Specificity)** with a **Precision floor** to balance catching PD patients vs. over-flagging controls.  
+
+### 5. **Explainability**  
+- Interpreted key acoustic features with **SHAP values**.  
+- Keeps the model clinician-friendly.  
+
+<br>
+
+## Key Results <!--- do not change this line -->
+
+- **Best model**: XGBoost with tree-based feature selection.  
+- **Cross-Validation (GroupKFold)** prioritized PD recall:  
+  - Recall (PD) ≈ 0.90+
+  - ROC-AUC ≈ 0.75–0.80 (expected variability due to small dataset)
+- **Test Set** (with tuned threshold, α=0.7 recall weight):
+  - Accuracy = 0.83
+  - Recall (PD) = 0.87 (high sensitivity)
+  - Precision (PD) = 0.89
+- **Trade-off**: Missing a PD patient (false negative) is worse than flagging a healthy person (false positive).  
+
+<br>
 
 ## Technologies Used <!--- do not change this line -->
 
@@ -41,6 +77,8 @@ Because subtle voice changes emerge in ~90 % of patients years earlier, we asked
 - XGBoost 1.7  
 - SHAP for model explainability  
 - Google Colab notebooks
+
+<br>
 
 ## Authors <!--- do not change this line -->
 
